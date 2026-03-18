@@ -42,12 +42,24 @@ class Player:  # pylint: disable=too-many-instance-attributes
         Awards the Go salary if the player passes or lands on Go.
         Returns the new board position.
         """
-        self.position = (self.position + steps) % BOARD_SIZE
+        old_position = self.position
+        raw_total = old_position + steps
+        self.position = raw_total % BOARD_SIZE
 
-        if self.position == 0:
-            self.add_money(GO_SALARY)
-            print(f"  {self.name} landed on Go and collected ${GO_SALARY}.")
+        passes = 0
+        if steps > 0 and raw_total >= BOARD_SIZE:
+            passes = raw_total // BOARD_SIZE
 
+        if passes:
+            self.add_money(GO_SALARY * passes)
+            if self.position == 0:
+                print(
+                    f"  {self.name} landed on Go and collected ${GO_SALARY * passes}."
+                )
+            else:
+                print(
+                    f"  {self.name} passed Go and collected ${GO_SALARY * passes}."
+                )
         return self.position
 
     def go_to_jail(self):
