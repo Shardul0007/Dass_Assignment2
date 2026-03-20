@@ -18,10 +18,14 @@ class Bank:
     def collect(self, amount):
         """
         Receive funds into the bank (taxes, fines, auction proceeds, etc.).
-        Negative amounts are silently ignored.
+        Negative amounts represent payouts/adjustments and will reduce reserves,
+        but do not count toward total collected.
         """
+        if amount is None:
+            return
         self._funds += amount
-        self._total_collected += amount
+        if amount > 0:
+            self._total_collected += amount
 
     def pay_out(self, amount):
         """
@@ -45,9 +49,10 @@ class Bank:
         """
         if amount <= 0:
             return
-        player.add_money(amount)
-        self._loans_issued.append((player.name, amount))
-        print(f"  Bank issued a ${amount} emergency loan to {player.name}.")
+        paid = self.pay_out(amount)
+        player.add_money(paid)
+        self._loans_issued.append((player.name, paid))
+        print(f"  Bank issued a ${paid} emergency loan to {player.name}.")
 
     def total_loans_issued(self):
         """Return the cumulative value of all loans the bank has issued."""

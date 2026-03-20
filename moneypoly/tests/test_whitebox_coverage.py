@@ -72,12 +72,14 @@ class TestBankMorePaths(unittest.TestCase):
         bank = Bank()
         player = Player("P")
         start_balance = player.balance
+        start_bank_funds = bank.get_balance()
 
         with mock.patch("builtins.print"):
             bank.give_loan(player, 123)
             bank.summary()
 
         self.assertEqual(player.balance, start_balance + 123)
+        self.assertEqual(bank.get_balance(), start_bank_funds - 123)
         self.assertEqual(bank.loan_count(), 1)
         self.assertEqual(bank.total_loans_issued(), 123)
         self.assertIn("Bank(funds=", repr(bank))
