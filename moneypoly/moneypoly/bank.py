@@ -21,8 +21,6 @@ class Bank:
         Negative amounts represent payouts/adjustments and will reduce reserves,
         but do not count toward total collected.
         """
-        if amount is None:
-            return
         self._funds += amount
         if amount > 0:
             self._total_collected += amount
