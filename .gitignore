@@ -2,5 +2,13 @@
 __pycache__/
 *.py[cod]
 
+# Coverage artifacts
+.coverage
+coverage.xml
+htmlcov/
+
+# Test caches
+.pytest_cache/
+
 # OS junk
 .DS_Store
